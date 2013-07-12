@@ -1,0 +1,22 @@
+<div class="setup" id="feed-setup">
+  <h1><%= t('import.title') %></h1>
+  <h2><%= t('import.subtitle') %></h2>
+
+  <hr />
+  <p>
+    This is just a temporary page for importing Google Reader starred.json.
+  </p>
+  <hr />
+
+  <form id="import" method="POST" action="/stars/import" enctype="multipart/form-data">
+    <input id="starred_file" name="starred_file" type="file" title="<%= t('import.fields.import') %>" class="btn-primary" />
+  </form>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  $('#starred_file').on("filePicked", function(e) {
+    $('form#import').submit();
+  });
+});
+</script>

@@ -1,3 +1,4 @@
+require_relative "../commands/stories/import_from_starredjson" # temporary
 require_relative "../repositories/story_repository"
 require_relative "../commands/stories/mark_all_as_read"
 
@@ -18,6 +19,17 @@ class Stringer < Sinatra::Base
     @starred_stories = StoryRepository.starred(params[:page])
 
     erb :starred
+  end
+
+  # temporary
+  get "/stars/import" do
+    erb :'stars/import'
+  end
+
+  post "/stars/import" do
+    ImportFromStarredJson.import(params["starred_file"][:tempfile].read)
+
+    redirect to("/starred")
   end
 
   put "/stories/:id" do
