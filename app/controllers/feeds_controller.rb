@@ -1,6 +1,5 @@
 require_relative "../repositories/feed_repository"
 require_relative "../commands/feeds/add_new_feed"
-require_relative "../commands/feeds/export_to_opml"
 
 class Stringer < Sinatra::Base
   get "/feeds" do
@@ -35,22 +34,5 @@ class Stringer < Sinatra::Base
       flash.now[:error] = t('feeds.add.flash.feed_not_found_error')
       erb :'feeds/add'
     end
-  end
-
-  get "/feeds/import" do
-    erb :'feeds/import'
-  end
-
-  post "/feeds/import" do
-    ImportFromOpml.import(params["opml_file"][:tempfile].read)
-
-    redirect to("/setup/tutorial")
-  end
-
-  get "/feeds/export" do
-    content_type 'application/octet-stream'
-    attachment 'stringer.xml'
-
-    ExportToOpml.new(Feed.all).to_xml
   end
 end

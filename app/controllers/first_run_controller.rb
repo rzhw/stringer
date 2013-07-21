@@ -1,4 +1,3 @@
-require_relative "../commands/feeds/import_from_opml"
 require_relative "../commands/users/create_user"
 require_relative "../commands/users/complete_setup"
 require_relative "../repositories/user_repository"
@@ -25,7 +24,7 @@ class Stringer < Sinatra::Base
         user = CreateUser.new.create(params[:password])
         session[:user_id] = user.id
 
-        redirect to("/feeds/import")
+        redirect to("/import/opml")
       end
     end
 

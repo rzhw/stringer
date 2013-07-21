@@ -10,7 +10,7 @@ class ImportFromStarredJson
     items.each do |item|
       feed_url = item[:origin][:streamId].sub('feed/', '')
       feed = FeedRepository.fetch_by_url(feed_url).first
-      
+
       if feed.nil?
         # TODO: create a new feed. just skip for now
         next

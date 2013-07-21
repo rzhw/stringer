@@ -42,7 +42,7 @@ describe "StoriesController" do
       get "/news"
 
       page = last_response.body
-      page.should have_tag("a", with: { href: "/feeds/export"})
+      page.should have_tag("a", with: { href: "/export/opml"})
       page.should have_tag("a", with: { href: "/logout"})
       page.should have_tag("a", with: { href: "https://github.com/swanson/stringer"})
     end

@@ -100,6 +100,7 @@ end
 
 require_relative "app/controllers/stories_controller"
 require_relative "app/controllers/first_run_controller"
+require_relative "app/controllers/import_export_controller"
 require_relative "app/controllers/sessions_controller"
 require_relative "app/controllers/feeds_controller"
 require_relative "app/controllers/debug_controller"
