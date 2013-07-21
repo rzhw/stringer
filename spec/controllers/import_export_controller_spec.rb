@@ -45,6 +45,26 @@ describe "ImportExportController" do
     end
   end
 
+  describe "GET /import/starredjson" do
+    it "displays the import button" do
+      get "/import/starredjson"
+
+      page = last_response.body
+      page.should have_tag("input#starred_file")
+    end
+  end
+
+  describe "POST /import/starredjson" do
+    let(:starred_file) { Rack::Test::UploadedFile.new("spec/sample_data/starred.json", "application/json") }
+
+    it "parses starred.json and redirects to starred" do
+      ImportFromStarredJson.should_receive(:import).once
+      post "/import/starredjson", {"starred_file" => starred_file}
+      last_response.status.should be 302
+      URI::parse(last_response.location).path.should eq "/starred"
+    end
+  end
+
   describe "GET /export/opml" do
     let(:some_xml) { "<xml>some dummy opml</xml>"}
     before { Feed.stub(:all) }
