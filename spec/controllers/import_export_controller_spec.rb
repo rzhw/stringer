@@ -18,13 +18,30 @@ describe "ImportExportController" do
   describe "POST /import/opml" do
     let(:opml_file) { Rack::Test::UploadedFile.new("spec/sample_data/subscriptions.xml", "application/xml") }
 
-    it "parse OPML and starts fetching" do
-      ImportFromOpml.should_receive(:import).once
+    context "when a user has not been setup" do
+      before do
+        UserRepository.stub(:setup_complete?).and_return(false)
+      end
 
-      post "/import/opml", {"opml_file" => opml_file}
+      it "parses OPML and redirects to tutorial" do
+        ImportFromOpml.should_receive(:import).once
+        post "/import/opml", {"opml_file" => opml_file}
+        last_response.status.should be 302
+        URI::parse(last_response.location).path.should eq "/setup/tutorial"
+      end
+    end
 
-      last_response.status.should be 302
-      URI::parse(last_response.location).path.should eq "/setup/tutorial"
+    context "when a user has been setup" do
+      before do
+        UserRepository.stub(:setup_complete?).and_return(true)
+      end
+
+      it "parses OPML and redirects to news" do
+        ImportFromOpml.should_receive(:import).once
+        post "/import/opml", {"opml_file" => opml_file}
+        last_response.status.should be 302
+        URI::parse(last_response.location).path.should eq "/news"
+      end
     end
   end
 

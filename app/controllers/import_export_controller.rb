@@ -13,7 +13,11 @@ class Stringer < Sinatra::Base
     post "/opml" do
       ImportFromOpml.import(params["opml_file"][:tempfile].read)
 
-      redirect to("/setup/tutorial")
+      if UserRepository.setup_complete?
+        redirect to("/news")
+      else
+        redirect to("/setup/tutorial")
+      end
     end
 
     get "/starredjson" do
